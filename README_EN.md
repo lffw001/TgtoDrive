@@ -15,7 +15,7 @@
   <a href="https://hub.docker.com/r/walkingd/tgto123">
     <img src="https://img.shields.io/badge/Docker%20Image-walkingd%2Ftgto123-2496ED?style=for-the-badge&logo=docker" alt="Docker Image">
   </a>
-  <img src="https://img.shields.io/badge/Version-8.3.1-6C63FF?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-8.3.3-6C63FF?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/Arch-amd64%20%7C%20arm64-111827?style=for-the-badge" alt="Architecture">
 </p>
 
@@ -28,7 +28,7 @@
 </p>
 
 <p align="center">
-  <strong>An all-in-one cloud-drive media automation platform: from resource discovery, automatic transfer, smart organization and STRM mounting to Emby 302 direct-link playback. It focuses on 115 / 123 / Guangya Cloud Drive organization and transfer, full and incremental 115 / 123 STRM generation, and Emby reverse-proxy 302 playback.</strong>
+  <strong>An all-in-one cloud-drive media automation platform: from resource discovery, automatic transfer, smart organization and STRM mounting to Emby 302 direct-link playback. It focuses on 115 / 123 / Guangya Cloud Drive organization and transfer, full and incremental 115 / 123 / Guangya STRM generation, and Emby reverse-proxy 302 playback.</strong>
 </p>
 
 <p align="center">
@@ -47,7 +47,7 @@ Typical flow:
 Discovery / channel monitoring
         -> Transfer to 123 / 115 / Guangya / Tianyi and other cloud drives
         -> TMDB / AI-assisted media organization
-        -> Generate 115 / 123 STRM libraries
+        -> Generate 115 / 123 / Guangya STRM libraries
         -> Emby dashboard and 302 direct-link playback
 ```
 
@@ -79,7 +79,7 @@ This README is written for Docker image users and focuses on features, deploymen
 | --- | --- |
 | 123 Cloud Drive | Account setup, channel monitoring, share transfer, JSON fast import, offline tasks, STRM generation |
 | 115 Cloud Drive | Cookie / QR login, channel monitoring, organization, STRM, shared STRM, link transfer, offline tasks, cleanup |
-| Guangya Cloud Drive | SMS login token, channel monitoring, share-link transfer, media organization |
+| Guangya Cloud Drive | SMS login token, channel monitoring, share-link transfer, media organization, STRM generation |
 | Tianyi Cloud Drive | Account setup, channel monitoring, link transfer, cleanup |
 | HDHive | OAuth authorization, check-in, channel monitoring, transfer workflow, Tianyi-link handling |
 | Telegram | Channel monitoring, keyword rules, universal forwarding, scheduled sending, bot notifications |
@@ -115,6 +115,7 @@ TgtoDrive can turn transferred files into a cleaner media library for Emby, Jell
 | --- | --- |
 | 123 STRM | Generate STRM files from 123 cloud-drive folders |
 | 115 STRM | Generate STRM files from 115 cloud-drive folders |
+| Guangya STRM | Generate STRM files from Guangya cloud-drive folders through `/playgy/` playback links |
 | Shared STRM | Generate and organize STRM files from shared 115 resources |
 | Metadata sync | Sync subtitles, posters, NFO files and related assets |
 | Invalid cleanup | Remove invalid STRM files and empty directories |
@@ -436,6 +437,10 @@ Scans Guangya media folders and uses TMDB, media info and AI-assisted recognitio
 
 ![Guangya Organizer](picture/光鸭云盘-网盘整理功能.png)
 
+#### STRM Generation
+
+Generates STRM files for Guangya Cloud Drive folders. Playback links use `/playgy/` and can be mounted into Emby, Jellyfin or Plex.
+
 ### Tianyi Cloud Drive and Other Integrations
 
 #### Tianyi Account
@@ -528,7 +533,7 @@ Check Telegram connectivity, channel ID, keyword rules, blocklists, target folde
 
 ### STRM files are generated, but Emby cannot play them. What should I check?
 
-Make sure the STRM playback base URL is reachable from the Emby server, the 115 / 123 account is still valid, the Emby reverse-proxy instance is running, and the required ports are not blocked.
+Make sure the STRM playback base URL is reachable from the Emby server, the 115 / 123 / Guangya account is still valid, the Emby reverse-proxy instance is running, and the required ports are not blocked.
 
 ### What if the 115 Cookie expires?
 

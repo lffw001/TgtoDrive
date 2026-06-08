@@ -15,7 +15,7 @@
   <a href="https://hub.docker.com/r/walkingd/tgto123">
     <img src="https://img.shields.io/badge/Docker%20Image-walkingd%2Ftgto123-2496ED?style=for-the-badge&logo=docker" alt="Docker Image">
   </a>
-  <img src="https://img.shields.io/badge/Version-8.2.12-6C63FF?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-8.3.1-6C63FF?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/Arch-amd64%20%7C%20arm64-111827?style=for-the-badge" alt="Architecture">
 </p>
 
@@ -28,7 +28,7 @@
 </p>
 
 <p align="center">
-  <strong>An all-in-one cloud-drive media automation platform: from resource discovery, automatic transfer, smart organization and STRM mounting to Emby 302 direct-link playback. It focuses on 115 / 123 Cloud Drive organization, full and incremental 115 / 123 STRM generation, and Emby reverse-proxy 302 playback.</strong>
+  <strong>An all-in-one cloud-drive media automation platform: from resource discovery, automatic transfer, smart organization and STRM mounting to Emby 302 direct-link playback. It focuses on 115 / 123 / Guangya Cloud Drive organization and transfer, full and incremental 115 / 123 STRM generation, and Emby reverse-proxy 302 playback.</strong>
 </p>
 
 <p align="center">
@@ -45,7 +45,7 @@ Typical flow:
 
 ```text
 Discovery / channel monitoring
-        -> Transfer to 123 / 115 / Tianyi and other cloud drives
+        -> Transfer to 123 / 115 / Guangya / Tianyi and other cloud drives
         -> TMDB / AI-assisted media organization
         -> Generate 115 / 123 STRM libraries
         -> Emby dashboard and 302 direct-link playback
@@ -79,6 +79,7 @@ This README is written for Docker image users and focuses on features, deploymen
 | --- | --- |
 | 123 Cloud Drive | Account setup, channel monitoring, share transfer, JSON fast import, offline tasks, STRM generation |
 | 115 Cloud Drive | Cookie / QR login, channel monitoring, organization, STRM, shared STRM, link transfer, offline tasks, cleanup |
+| Guangya Cloud Drive | SMS login token, channel monitoring, share-link transfer, media organization |
 | Tianyi Cloud Drive | Account setup, channel monitoring, link transfer, cleanup |
 | HDHive | OAuth authorization, check-in, channel monitoring, transfer workflow, Tianyi-link handling |
 | Telegram | Channel monitoring, keyword rules, universal forwarding, scheduled sending, bot notifications |
@@ -86,9 +87,10 @@ This README is written for Docker image users and focuses on features, deploymen
 
 ### Transfer and monitoring
 
-- Monitor Telegram channels for 123, 115, Tianyi and HDHive resources.
+- Monitor Telegram channels for 123, 115, Guangya, Tianyi and HDHive resources.
 - Use Douban / Maoyan ranking lists and keyword allowlists to trigger transfers.
 - Configure blocklists, second-level routing, channel IDs and target folders.
+- Transfer Guangya share links directly, including fallback expansion for share folders that cannot be restored from their root item.
 - Monitor 123 share links for incremental updates.
 - Manage transfer history, logs and organization history from the Web console.
 
@@ -205,7 +207,7 @@ Log in with `ENV_WEB_PASSPORT` and `ENV_WEB_PASSWORD` from your compose file.
 ## Recommended Web Setup Order
 
 1. Open Global Settings and configure proxy, TMDB key and the Telegram main bot.
-2. Configure 115, 123 and Tianyi accounts.
+2. Configure 115, 123, Guangya and Tianyi accounts.
 3. Configure channel monitoring: channel IDs, target folders, keywords and blocklists.
 4. Configure organizer pages: scan folders, target folders, naming rules and upgrade policies.
 5. Configure STRM generation: cloud-drive folders and playback base URL.
@@ -407,6 +409,32 @@ Monitors incremental changes in 123 share links and automatically transfers newl
 Generates 123 Cloud Drive share links for search, forwarding and resource-publishing workflows.
 
 ![123 Share Generation](picture/123云盘-分享链接生成.png)
+
+### Guangya Cloud Drive
+
+#### Login and Token
+
+Uses SMS verification to log in to Guangya Cloud Drive, then persists the access token and refresh token for share transfer, channel monitoring and organization workflows.
+
+![Guangya Login and Token](picture/光鸭云盘-登录与Token.png)
+
+#### Channel Monitoring
+
+Configures Guangya resource-channel monitoring for public Telegram channels and TG API channel IDs. Keyword allowlists, blocklists, Douban / Maoyan rankings and second-level routing can all be used to decide what gets transferred.
+
+![Guangya Channel Monitoring](picture/光鸭云盘-频道监控配置.png)
+
+#### Link Transfer
+
+Handles Guangya share links and saves shared files or folders into the configured account folder. For shares whose root folder cannot be restored directly, TgtoDrive expands the folder and transfers child files as a fallback.
+
+![Guangya Link Transfer](picture/光鸭云盘-链接转存.png)
+
+#### Organizer
+
+Scans Guangya media folders and uses TMDB, media info and AI-assisted recognition to classify, rename, archive and upgrade media files, following the same organization model used by 123 and 115.
+
+![Guangya Organizer](picture/光鸭云盘-网盘整理功能.png)
 
 ### Tianyi Cloud Drive and Other Integrations
 
